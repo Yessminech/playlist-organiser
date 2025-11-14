@@ -1,0 +1,23 @@
+# Environment
+.env
+
+# Credentials cache
+*.token
+*.cache
+*token.json
+*refresh*
+client_secret.json
+
+# Output files - optional
+outputs/
+*.json
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# macOS junk
+.DS_Store
+
+# Logs
+*.log
