@@ -25,6 +25,7 @@ def load_songs(path):
     for s in songs:
         s.setdefault("bpm", None)
         s.setdefault("key", None)
+        s.setdefault("url", s.get("url"))
     return songs
 
 
@@ -168,10 +169,6 @@ def main():
         for r in rows:
             r_clean = " ".join(r.split())
             low = r_clean.lower()
-            if "bpm" not in low:
-                continue
-            if "funky haus" in low or "auto" in low:
-                continue
             all_rows.append(r_clean)
 
     print(f"\n📝 Extracted {len(all_rows)} candidate rows across screenshots")
@@ -217,10 +214,13 @@ def main():
     # Missing bpm or key
     incomplete = [s for s in songs if s["bpm"] is None or s["key"] is None]
     if incomplete:
-        print("\n⚠️ Songs with incomplete features:")
-        for s in incomplete:
-            print(f"  - {s['song']} ({s['artist']})  [bpm={s['bpm']}, key={s['key']}]")
+        incomplete_file = os.path.join(OUTPUT_DIR, base_name + "_incomplete.txt")
 
+        with open(incomplete_file, "w", encoding="utf-8") as f:
+            for s in incomplete:
+                f.write(f"{s['song']} - {s['artist']} | bpm={s['bpm']} | key={s['key']}\n")
+
+        print(f"\n📝 Saved incomplete songs list → {incomplete_file}")
     # Save final JSON
     # remove .json extension if user provided it
     base_name = os.path.splitext(os.path.basename(SONGS_FILE))[0] + "_features"

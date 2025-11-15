@@ -204,11 +204,27 @@ def main():
     missing = []
 
     for s in songs:
+
+        # --- 1) If URL already exists, extract track ID ---
+        if s.get("url"):
+            match = None
+            url = s["url"]
+            if "track/" in url:
+                match = url.split("track/")[1].split("?")[0]
+            elif url.startswith("spotify:track:"):
+                match = url.split(":")[-1]
+
+            if match:
+                track_ids.append(match)
+                continue  # skip search entirely
+
+        # --- 2) Otherwise: use Spotify search ---
         tid = spotify_search_track(s["song"], s["artist"], token)
         if tid:
             track_ids.append(tid)
         else:
             missing.append(s["song"])
+
 
     add_tracks_to_playlist(playlist_id, track_ids, token)
 

@@ -98,19 +98,16 @@ def build_bpm_first_path(songs):
 # ------------------ CLEAN OUTPUT ------------------ #
 
 def make_clean_output(ordered_songs):
-    """
-    Final output: ONLY the reordered tracklist.
-    """
     result = []
     for s in ordered_songs:
         result.append({
             "song": s.get("song"),
             "artist": s.get("artist"),
             "bpm": s.get("bpm"),
-            "key": s.get("key")
+            "key": s.get("key"),
+            "url": s.get("url")  # <-- added
         })
     return result
-
 
 # ------------------ IO + CLI ------------------ #
 

@@ -217,8 +217,13 @@ def main():
                 continue
             song = track.get("name")
             artists = ", ".join(a["name"] for a in track.get("artists", []))
-            cleaned.append({"song": song, "artist": artists})
+            track_url = track.get("external_urls", {}).get("spotify")
 
+            cleaned.append({
+                "song": song,
+                "artist": artists,
+                "url": track_url
+            })
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(cleaned, f, indent=2, ensure_ascii=False)
 
